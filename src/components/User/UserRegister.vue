@@ -1,7 +1,10 @@
 <script setup>
 import {reactive} from "vue";
 import {userRegister} from "../../lib/api/UserApi.js";
+import {alertError, alertSuccess} from "../../lib/alert.js";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const user = reactive({
   username: "",
   password: "",
@@ -15,10 +18,13 @@ async function handleSubmit() {
   console.log(responseBody)
 
   if (responseBody.status === 200) {
+    await alertSuccess("User registered successfully")
+    await router.push({
+      path: "/login"
+    })
   } else {
-    
+    await alertError(responseBody.errors)
   }
-
 }
 </script>
 
@@ -33,7 +39,7 @@ async function handleSubmit() {
       <p class="text-gray-300 mt-2">Create a new account</p>
     </div>
 
-    <form>
+    <form v-on:submit.prevent="handleSubmit">
       <div class="mb-4">
         <label for="username" class="block text-gray-300 text-sm font-medium mb-2">Username</label>
         <div class="relative">
@@ -104,14 +110,15 @@ async function handleSubmit() {
 
       <div class="text-center text-sm text-gray-400">
         Already have an account?
-        <a
-            href="index.html"
-            class="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">
+
+        <RouterLink to="/login"
+                    class="text-blue-4lue-300 font-medium transition-colors duration-200">
           Sign in
-        </a>
+        </RouterLink>
       </div>
     </form>
   </div>
 </template>
 
 <style scoped></style>
+00 hover:text-b
