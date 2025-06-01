@@ -13,11 +13,16 @@ const user = reactive({
 })
 
 async function handleSubmit() {
+  if (user.password !== user.confirm_password) {
+    await alertError("Passwords do not match")
+    return
+  }
+
   const response = await userRegister(user)
   const responseBody = await response.json()
   console.log(responseBody)
 
-  if (responseBody.status === 200) {
+  if (response.status === 200) {
     await alertSuccess("User registered successfully")
     await router.push({
       path: "/login"
